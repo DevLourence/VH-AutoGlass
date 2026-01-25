@@ -759,7 +759,7 @@
                 if (error) throw error;
 
                 servicesCache = data || [];
-                document.getElementById('service-type').innerHTML = '<option value="">Select Category</option>' + servicesCache.map(s => `< option value = "${s.name}" > ${s.name}</option > `).join('');
+                document.getElementById('service-type').innerHTML = '<option value="">Select Category</option>' + servicesCache.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
             } catch (error) {
                 console.error('Error fetching services:', error);
                 servicesCache = [];
@@ -1095,7 +1095,7 @@
                 const address = document.getElementById('service-address').value;
                 const fullLocation = branch ? `${branch} - ${address} ` : address;
 
-                const { error } = await _supabase
+                const { data, error } = await _supabase
                     .from('bookings')
                     .insert([{
                         user_id: currentUser.id,
@@ -1106,7 +1106,8 @@
                         status: 'pending',
                         notes: document.getElementById('service-desc').value,
                         photo_url: JSON.stringify(photoUrls)
-                    }]);
+                    }])
+                    .select();
 
                 if (error) throw error;
 
