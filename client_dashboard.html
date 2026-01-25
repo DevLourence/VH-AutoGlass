@@ -646,7 +646,6 @@
         const EMAILJS_PUBLIC_KEY = 'KrQKBIJbfctFaiUJm';
         const EMAILJS_SERVICE_ID = 'service_e823gnp';
         const EMAILJS_TEMPLATE_NEW_BOOKING = 'TEMPLATE_ID_HERE';
-        const EMAILJS_TEMPLATE_NEW_REVIEW = 'TEMPLATE_ID_HERE';
 
         emailjs.init(EMAILJS_PUBLIC_KEY);
 
@@ -1214,33 +1213,20 @@
                 const bookingId = document.getElementById('review-booking-id').value;
                 const comment = document.getElementById('review-comment').value;
 
-                // Upload review photos if any
                 let photoUrls = [];
                 const photoInput = document.getElementById('review-photos');
 
                 if (photoInput && photoInput.files.length > 0) {
                     btn.innerText = "UPLOADING PHOTOS...";
-
                     try {
-                        photoUrls = await window.ImageKitUpload.uploadMultipleFiles(
-                            photoInput.files,
-                            'booking-media' // ImgBB doesn't use folders, but keep for compatibility
-                        );
+                        photoUrls = await window.ImageKitUpload.uploadMultipleFiles(photoInput.files, 'booking-media');
                     } catch (uploadError) {
                         console.error('Photo upload failed:', uploadError);
-                        // Continue without photos if upload fails
                         photoUrls = [];
                     }
                 }
 
                 btn.innerText = "SUBMITTING REVIEW...";
-
-                // Get user profile for email
-                const { data: profile } = await _supabase
-                    .from('profiles')
-                    .select('full_name, email')
-                    .eq('id', currentUser.id)
-                    .single();
 
                 const { error } = await _supabase
                     .from('reviews')
@@ -1255,28 +1241,13 @@
 
                 if (error) throw error;
 
-                if (error) throw error;
-
-                // --- TRIGGER ADMIN NOTIFICATION (EMAILJS) ---
-                const emailParams = {
-                    client_name: profile?.full_name || currentUser.full_name || 'Client',
-                    rating: currentRating,
-                    comment: comment,
-                    booking_id: bookingId || 'General'
-                };
-
-                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_NEW_REVIEW, emailParams)
-                    .then(() => console.log('Admin notified of review'))
-                    .catch(err => console.error("EmailJS Review Error:", err));
-
-                // UI Feedback
                 showNiceModal({
                     title: "Review Submitted",
-                    message: `✅ Thank you for your feedback${photoUrls.length > 0 ? ` with ${photoUrls.length} attachment(s)` : ''}! Your review will be published after approval.`,
+                    message: `✅ Thank you for your feedback! Your review will be published after approval.`,
                     type: "success"
                 });
                 closeReviewModal();
-                fetchJobs(); // Refresh to show review submitted
+                fetchJobs();
             } catch (err) {
                 console.error(err);
                 showNiceModal({
@@ -1290,27 +1261,21 @@
             }
         });
 
-        // --- Avatar Upload Logic ---
         async function uploadAvatar(input) {
             const file = input.files[0];
             if (!file) return;
 
-            // Validate file size (max 2MB)
             if (file.size > 2 * 1024 * 1024) {
                 return showNiceModal({ title: 'File Too Large', message: 'Profile photo must be under 2MB.', type: 'warning' });
             }
 
             try {
-                // Show loading state
                 const avatarEl = document.getElementById('header-avatar');
-                const originalContent = avatarEl.innerHTML;
                 avatarEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-purple-600"></i>`;
 
-                // Upload to ImageKit
                 const result = await window.ImageKitUpload.uploadToImageKit(file, `avatar_${currentUser.id}`);
                 const avatarUrl = result.url;
 
-                // Update Supabase Profile
                 const { error } = await _supabase
                     .from('profiles')
                     .update({ avatar_url: avatarUrl })
@@ -1318,12 +1283,10 @@
 
                 if (error) throw error;
 
-                // Update UI
                 avatarEl.innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover animate-pulse">`;
                 setTimeout(() => avatarEl.querySelector('img').classList.remove('animate-pulse'), 500);
 
                 await showNiceModal({ title: 'Success', message: 'Profile photo updated.', type: 'success' });
-
             } catch (error) {
                 console.error('Avatar upload error:', error);
                 await showNiceModal({
@@ -1331,15 +1294,13 @@
                     message: "Failed to update profile photo: " + error.message,
                     type: "danger"
                 });
-                // Revert UI on failure
                 document.getElementById('header-avatar').innerHTML = `<span class="text-sm font-black text-slate-400 uppercase">${currentUser.full_name.charAt(0)}</span>`;
             }
         }
 
-        // --- Session Timeout (AFK Handler) ---
         function initSessionTimeout() {
             let timeout;
-            const TIMEOUT_DURATION = 3600000; // 1 Hour
+            const TIMEOUT_DURATION = 3600000;
 
             async function logoutUser() {
                 await showNiceModal({ title: 'Session Expired', message: 'You have been inactive for 1 hour. Logging out for security.', type: 'warning' });
@@ -1361,8 +1322,6 @@
         initSessionTimeout();
         checkSession();
 
-
-        // --- Premium Modal System ---
         function showNiceModal({ title, message, type = 'info', confirmText = 'OK', cancelText = null }) {
             return new Promise((resolve) => {
                 const modal = document.getElementById('ui-modal');
@@ -1420,7 +1379,7 @@
 
         function closeLightbox() {
             document.getElementById('lightbox-modal').classList.remove('active');
-            document.getElementById('lightbox-content').innerHTML = ''; // Stop video
+            document.getElementById('lightbox-content').innerHTML = '';
         }
     </script>
 </body>
