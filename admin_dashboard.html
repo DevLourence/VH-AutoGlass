@@ -1822,7 +1822,9 @@
 
                 // Refresh UI components
                 fetchBookings();
-                if (window.calendar) window.calendar.refetchEvents();
+                if (calendar && typeof calendar.refetchEvents === 'function') {
+                    calendar.refetchEvents();
+                }
 
             } catch (error) {
                 console.error('Operation Failed:', error);
