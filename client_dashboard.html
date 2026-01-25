@@ -1114,20 +1114,15 @@
                 // --- TRIGGER ADMIN NOTIFICATION ---
                 if (data && data[0]) {
                     const bookingId = data[0].id;
-                    fetch('https://glnzltetqxpvxsoqwerz.supabase.co/functions/v1/send-booking-update', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                        },
-                        body: JSON.stringify({
+                    _supabase.functions.invoke('send-booking-update', {
+                        body: {
                             type: 'admin_new_booking',
                             name: currentUser.full_name || 'Client',
                             details: document.getElementById('service-type').value,
                             booking_id: bookingId,
-                            to: 'admin' // Placeholder, backend handles fetching actual admin emails
-                        })
-                    }).catch(console.error); // Non-blocking
+                            to: 'admin'
+                        }
+                    }).catch(err => console.error("Admin Notification Error:", err));
                 }
 
                 showNiceModal({
