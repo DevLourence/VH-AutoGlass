@@ -537,7 +537,7 @@ async function fetchDynamicPortfolio() {
 
 
 let currentPage = 1;
-const imagesPerPage = 8;
+const imagesPerPage = 4;
 let dynamicProjects = [];
 
 function renderProjects() {
