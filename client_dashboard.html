@@ -427,6 +427,29 @@
             font-weight: 900;
             border: 2px solid white;
         }
+
+        /* --- MOBILE OPTIMIZATIONS --- */
+        @media (max-width: 768px) {
+            .notification-dropdown {
+                width: calc(100vw - 32px);
+                right: -16px;
+                border-radius: 20px;
+            }
+
+            .card-premium {
+                padding: 1.5rem !important;
+                border-radius: 24px;
+            }
+
+            main {
+                padding-top: 6rem !important;
+            }
+
+            nav {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -436,14 +459,19 @@
     <div class="blob" style="bottom: -100px; right: -100px; animation-delay: -10s;"></div>
 
     <nav
-        class="glass fixed w-full z-50 border-b border-white/20 px-6 py-4 flex justify-between items-center transition-all duration-300">
-        <div class="flex items-center space-x-4">
+        class="glass fixed w-full z-50 border-b border-white/20 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center space-x-3 md:space-x-4">
             <div
-                class="w-12 h-12 rounded-full flex items-center justify-center text-white bg-transparent overflow-hidden">
-                <img src="image/logo/vh_logo.png" class="w-full h-full rounded-full object-contain scale-125">
+                class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center text-white bg-purple-600 overflow-hidden shadow-lg shadow-purple-500/20">
+                <img src="image/logo/vh_logo.png" class="w-full h-full object-contain scale-110">
             </div>
             <div>
-                <span class="block text-lg font-extrabold uppercase tracking-tighter text-slate-900">VH Autoglass</span>
+                <span
+                    class="block text-sm md:text-lg font-extrabold uppercase tracking-tighter text-slate-900 leading-tight">VH
+                    Portal</span>
+                <span
+                    class="block text-[8px] font-black text-purple-600 uppercase tracking-[0.2em] leading-tight">Client
+                    Hub</span>
             </div>
         </div>
         <div class="flex items-center gap-4">

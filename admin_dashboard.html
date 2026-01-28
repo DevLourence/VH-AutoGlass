@@ -459,6 +459,31 @@
             font-weight: 900;
             border: 2px solid white;
         }
+
+        /* --- ADMIN MOBILE OVERRIDES --- */
+        @media (max-width: 1024px) {
+            #section-title {
+                font-size: 1.75rem !important;
+            }
+
+            .card-premium {
+                padding: 1.25rem !important;
+                border-radius: 20px;
+            }
+
+            main {
+                padding-top: 5rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                margin-bottom: 2rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -1459,7 +1484,24 @@
             else if (!document.getElementById('logs-section').classList.contains('hidden')) fetchLogs();
         }
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const backdrop = document.getElementById('sidebarForwardDrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
         function switchTab(tab) {
+            // Auto-close sidebar on mobile
+            if (window.innerWidth < 1024) {
+                toggleSidebar();
+            }
+
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             const target = document.getElementById(tab + '-section');
             if (target) target.classList.remove('hidden');

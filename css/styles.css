@@ -95,11 +95,26 @@
 
 /* --- HERO & LANDING --- */
 #hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../image/hero_bg_clean.png');
+    background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('../image/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #000000;
+    background-color: #0f172a;
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* Dynamic viewport for modern mobile browsers */
+}
+
+@media (max-width: 768px) {
+    .card-premium {
+        padding: 1.5rem;
+        border-radius: 24px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        line-height: 1;
+    }
 }
 
 .text-shadow {

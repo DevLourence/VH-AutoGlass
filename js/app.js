@@ -378,6 +378,26 @@ function toggleAuthMode(mode) {
     else document.getElementById(`form-${mode}`)?.classList.remove('hidden');
 }
 
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('menu-icon');
+    if (!menu) return;
+
+    const isActive = menu.classList.contains('opacity-100');
+
+    if (isActive) {
+        menu.classList.remove('opacity-100', 'pointer-events-auto');
+        menu.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = 'auto';
+        if (icon) icon.className = 'fa-solid fa-bars-staggered';
+    } else {
+        menu.classList.remove('opacity-0', 'pointer-events-none');
+        menu.classList.add('opacity-100', 'pointer-events-auto');
+        document.body.style.overflow = 'hidden';
+        if (icon) icon.className = 'fa-solid fa-xmark';
+    }
+}
+
 async function handleDashboardRedirect() {
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session) return showView('login');
@@ -460,7 +480,7 @@ async function fetchPublicReviews() {
     try {
         const { data, error } = await _supabase
             .from('reviews')
-            .select('*, profiles:user_id (full_name)')
+            .select('*, profiles:user_id (full_name, avatar_url)')
             .eq('is_approved', true)
             .order('is_featured', { ascending: false })
             .order('created_at', { ascending: false })
@@ -501,13 +521,15 @@ async function fetchPublicReviews() {
                 <div class="h-px bg-slate-50 w-full mb-8"></div>
 
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-[#5b21b6] flex items-center justify-center text-white font-black text-sm shadow-xl shadow-purple-500/20 group-hover:scale-110 transition-transform">
-                        ${(r.profiles?.full_name || 'V').charAt(0).toUpperCase()}
+                    <div class="w-12 h-12 rounded-2xl bg-[#5b21b6] overflow-hidden flex items-center justify-center text-white font-black text-sm shadow-xl shadow-purple-500/20 group-hover:scale-110 transition-transform">
+                        ${r.profiles?.avatar_url
+                ? `<img src="${r.profiles.avatar_url}" class="w-full h-full object-cover">`
+                : (r.profiles?.full_name || 'V').charAt(0).toUpperCase()}
                     </div>
                     <div>
                         <p class="font-black text-[11px] uppercase tracking-[0.2em] text-slate-800 mb-0.5">${r.profiles?.full_name || 'Anonymous Client'}</p>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5 font-jakarta">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Verified Mission
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Verified Client
                         </p>
                     </div>
                 </div>

@@ -129,7 +129,7 @@
 
     <!-- Back to Top Button -->
     <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-        class="fixed bottom-24 left-8 z-[90] w-12 h-12 bg-white/80 backdrop-blur-md text-slate-600 border border-slate-200 rounded-2xl flex items-center justify-center shadow-xl hover:bg-purple-600 hover:text-white transition-all opacity-0 invisible">
+        class="fixed bottom-8 left-8 z-[90] w-12 h-12 bg-white/80 backdrop-blur-md text-slate-600 border border-slate-200 rounded-2xl flex items-center justify-center shadow-xl hover:bg-purple-600 hover:text-white transition-all opacity-0 invisible">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
@@ -147,85 +147,141 @@
     </div>
 
     <nav
-        class="glass-morph fixed w-full z-50 border-b border-white/20 px-4 md:px-6 py-2 flex justify-between items-center">
+        class="glass-morph fixed w-full z-[100] border-b border-white/20 px-4 md:px-6 py-3 flex justify-between items-center">
         <div class="flex items-center space-x-2 md:space-x-4 cursor-pointer" onclick="showView('landing')">
             <div
-                class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-transparent overflow-hidden flex items-center justify-center">
-                <img src="image/logo/vh_logo.png" alt="Logo" class="w-full h-full object-contain scale-125">
+                class="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-purple-600 overflow-hidden flex items-center justify-center shadow-lg shadow-purple-500/20">
+                <img src="image/logo/vh_logo.png" alt="Logo" class="w-full h-full object-contain scale-110">
             </div>
-            <div
-                class="text-xl md:text-2xl font-black text-purple-600 tracking-tighter uppercase whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] md:max-w-none">
-                <span class="hidden md:inline">VH Autoglass</span>
-                <span class="md:hidden">VH Autoglass</span>
+            <div class="flex flex-col">
+                <span class="text-sm md:text-2xl font-black text-slate-900 tracking-tighter uppercase leading-none">VH
+                    Autoglass</span>
+                <span
+                    class="text-[8px] font-black text-purple-600 uppercase tracking-[0.3em] leading-none mt-1">Professional</span>
             </div>
         </div>
-        <div>
+
+        <div class="flex items-center gap-3">
             <button id="nav-login-btn" onclick="showView('login')"
-                class="bg-purple-600 text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold shadow-lg hover:bg-purple-700 transition uppercase tracking-widest hover:scale-105">Login</button>
+                class="hidden sm:block bg-purple-600 text-white px-6 py-2 rounded-full text-xs font-bold shadow-lg hover:bg-purple-700 transition uppercase tracking-widest hover:scale-105">Client
+                Portal</button>
+
+            <button onclick="toggleMobileMenu()"
+                class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center md:hidden shadow-lg">
+                <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
+            </button>
         </div>
     </nav>
 
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-slate-900/95 backdrop-blur-2xl z-[150] opacity-0 pointer-events-none transition-all duration-500 flex flex-col items-center justify-center space-y-8">
+        <button onclick="toggleMobileMenu()"
+            class="absolute top-8 right-8 w-14 h-14 rounded-2xl bg-white/10 text-white flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="flex flex-col items-center space-y-6">
+            <a href="#hero" onclick="toggleMobileMenu()"
+                class="text-3xl font-black text-white uppercase tracking-tighter hover:text-purple-500 transition-colors">Home</a>
+            <a href="#expert-services" onclick="toggleMobileMenu()"
+                class="text-3xl font-black text-white uppercase tracking-tighter hover:text-purple-500 transition-colors">Services</a>
+            <a href="#recent-projects" onclick="toggleMobileMenu()"
+                class="text-3xl font-black text-white uppercase tracking-tighter hover:text-purple-500 transition-colors">Portfolio</a>
+            <a href="#location-map" onclick="toggleMobileMenu()"
+                class="text-3xl font-black text-white uppercase tracking-tighter hover:text-purple-500 transition-colors">Location</a>
+        </div>
+
+        <button onclick="showView('login'); toggleMobileMenu()"
+            class="bg-purple-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-2xl">
+            Client Portal Access
+        </button>
+    </div>
+
     <section id="view-landing" class="view active">
-        <div id="hero"
-            class="h-screen relative flex items-center justify-center text-center px-4 md:px-6 bg-cover bg-center bg-no-repeat"
-            style="background-image: url('image/background.jpg');">
-            <div class="absolute inset-0 bg-slate-900/60 z-0"></div>
-            <div class="max-w-4xl text-white z-10">
-                <h1 class="text-4xl sm:text-6xl md:text-9xl font-black leading-none mb-8 uppercase tracking-tighter"
-                    style="-webkit-text-stroke: 2px white;">
+        <div id="hero" class="relative flex items-center justify-center text-center px-4 md:px-6">
+            <div class="absolute inset-0 bg-slate-900/40 z-0 md:hidden"></div> <!-- Extra mobile contrast -->
+            <div class="max-w-4xl text-white z-10 py-20">
+                <h1 class="hero-title text-4xl sm:text-6xl md:text-9xl font-black leading-none mb-8 uppercase tracking-tighter"
+                    style="-webkit-text-stroke: 1.5px white;">
                     <span class="text-purple-600">VH</span> <br>
                     <span class="text-amber-400">Autoglass</span>
                 </h1>
                 <p
-                    class="animate-float text-lg md:text-2xl text-slate-100 mb-8 md:mb-10 font-bold text-shadow tracking-wide">
-                    We specialize in windshield replacement and repair, performed directly at your home or location.
-                    Fast, convenient, and professional.
+                    class="animate-float text-lg md:text-2xl text-slate-100 mb-8 md:mb-10 font-bold text-shadow tracking-wide px-4">
+                    Professional mobile windshield replacement and repair.
+                    <span class="block text-sm md:text-2xl mt-2 text-purple-200">Fast. Convenient. Guaranteed.</span>
                 </p>
-                <div class="cta-buttons flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
-                    <button onclick="document.getElementById('expert-services').scrollIntoView({behavior:'smooth'})"
-                        class="bg-white text-purple-600 px-8 md:px-10 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-lg md:text-xl shadow-xl hover:bg-slate-100 transition btn-magnetic">Our
-                        Services</button>
+                <div class="cta-buttons flex flex-col sm:flex-row justify-center gap-4 px-6 md:px-0">
                     <button id="hero-book-btn" onclick="showView('login')"
-                        class="btn-pulse bg-purple-600 hover:bg-purple-700 px-8 md:px-10 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-lg md:text-xl shadow-xl transition transform btn-magnetic">Book
-                        Now</button>
+                        class="btn-pulse bg-purple-600 hover:bg-purple-700 px-8 py-5 rounded-2xl font-black text-lg shadow-2xl transition transform btn-magnetic w-full sm:w-auto">Book
+                        Service</button>
+                    <button onclick="document.getElementById('expert-services').scrollIntoView({behavior:'smooth'})"
+                        class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-white hover:text-purple-600 transition btn-magnetic w-full sm:w-auto">Our
+                        Work</button>
                 </div>
 
-                <div class="mt-12 flex justify-center items-center gap-6 opacity-80 overflow-hidden">
-                    <div class="flex -space-x-4">
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200"></div>
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-300"></div>
-                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-400"></div>
+                <!-- Social Proof Avatar Stack -->
+                <div class="mt-12 flex flex-col items-center gap-4 animate-fade-in" style="animation-delay: 0.8s">
+                    <div class="flex items-center -space-x-4">
+                        <img src="image/avatars/face1.png" alt="Client 1"
+                            class="w-12 h-12 rounded-full border-4 border-slate-900 object-cover shadow-xl transition-transform hover:scale-110 hover:z-10">
+                        <img src="image/avatars/face2.png" alt="Client 2"
+                            class="w-12 h-12 rounded-full border-4 border-slate-900 object-cover shadow-xl transition-transform hover:scale-110 hover:z-10">
+                        <img src="image/avatars/face3.png" alt="Client 3"
+                            class="w-12 h-12 rounded-full border-4 border-slate-900 object-cover shadow-xl transition-transform hover:scale-110 hover:z-10">
+                        <div
+                            class="w-12 h-12 rounded-full border-4 border-slate-900 bg-amber-400 flex items-center justify-center text-slate-900 font-black text-xs shadow-xl">
+                            500+
+                        </div>
                     </div>
-                    <p class="text-xs font-bold uppercase tracking-widest text-slate-300">Join 500+ Happy Customers
-                        locally</p>
+                    <div class="flex items-center gap-2">
+                        <div class="flex text-amber-400 text-[10px]">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-[10px] font-black text-white uppercase tracking-[0.2em]">Trusted by 500+ Happy
+                            Customers</span>
+                    </div>
                 </div>
+
+
             </div>
         </div>
 
         <!-- Trust Badges Row -->
-        <div class="bg-white/50 backdrop-blur-xl border-y border-slate-100 py-10 overflow-hidden">
+        <div class="bg-white/50 backdrop-blur-xl border-y border-slate-100 py-8 md:py-10 overflow-hidden">
             <div class="max-w-7xl mx-auto px-6">
                 <div
-                    class="flex flex-wrap justify-center md:justify-between items-center gap-10 opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
-                    <div class="flex items-center gap-3 badge-float" style="animation-delay: 0.1s">
-                        <i class="fa-solid fa-certificate text-purple-600 text-2xl"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Certified
+                    class="grid grid-cols-2 md:flex md:justify-between items-center gap-8 md:gap-10 opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
+                    <div class="flex items-center justify-center md:justify-start gap-3 badge-float"
+                        style="animation-delay: 0.1s">
+                        <i class="fa-solid fa-certificate text-purple-600 text-xl md:text-2xl"></i>
+                        <span
+                            class="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-800">Certified
                             Techs</span>
                     </div>
-                    <div class="flex items-center gap-3 badge-float" style="animation-delay: 0.3s">
-                        <i class="fa-solid fa-gem text-amber-500 text-2xl"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">OEM Quality
-                            Glass</span>
+                    <div class="flex items-center justify-center md:justify-start gap-3 badge-float"
+                        style="animation-delay: 0.3s">
+                        <i class="fa-solid fa-gem text-amber-500 text-xl md:text-2xl"></i>
+                        <span class="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-800">OEM
+                            Quality</span>
                     </div>
-                    <div class="flex items-center gap-3 badge-float" style="animation-delay: 0.5s">
-                        <i class="fa-solid fa-shield-virus text-purple-600 text-2xl"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Fully
+                    <div class="flex items-center justify-center md:justify-start gap-3 badge-float"
+                        style="animation-delay: 0.5s">
+                        <i class="fa-solid fa-shield-virus text-purple-600 text-xl md:text-2xl"></i>
+                        <span
+                            class="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-800">Fully
                             Insured</span>
                     </div>
-                    <div class="flex items-center gap-3 badge-float" style="animation-delay: 0.7s">
-                        <i class="fa-solid fa-tag text-emerald-500 text-2xl"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Best Rates
-                            Guarenteed</span>
+                    <div class="flex items-center justify-center md:justify-start gap-3 badge-float"
+                        style="animation-delay: 0.7s">
+                        <i class="fa-solid fa-tag text-emerald-500 text-xl md:text-2xl"></i>
+                        <span class="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-800">Best
+                            Rates</span>
                     </div>
                 </div>
             </div>
@@ -461,13 +517,14 @@
                     <div class="bg-white rounded-3xl shadow-lg border border-slate-200 overflow-hidden">
                         <!-- Google Maps Embed -->
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2439.6398547725!2d-113.84346219999996!3d52.304390900000016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x537454fa20054585%3A0x2cbcc025dc8b719e!2sJamieson%20Ave%2C%20Red%20Deer%2C%20AB%20T4P%200M2%2C%20Canada!5e0!3m2!1sen!2sph!4v1769523941972!5m2!1sen!2sph"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1219.8713880268433!2d-113.81236396101141!3d52.30252299300129!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x537455a8f84a14e7%3A0xa7e3427584484b1c!2s7492%2049%20Ave%2C%20Red%20Deer%2C%20AB%20T4P%201M2%2C%20Canada!5e0!3m2!1sen!2sph!4v1769564076640!5m2!1sen!2sph"
                             width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade" class="w-full">
                         </iframe>
                     </div>
                     <div class="text-center mt-8 space-y-4">
-                        <a href="https://maps.app.goo.gl/y1L8Xzdocnj2j6e7A" target="_blank" rel="noopener noreferrer"
+                        <a href="https://www.google.com/maps/search/?api=1&query=7492+49+Ave,+Red+Deer,+AB+T4P+1M2,+Canada"
+                            target="_blank" rel="noopener noreferrer"
                             class="inline-flex items-center gap-2 bg-purple-600 text-white px-8 py-4 rounded-2xl font-black text-sm shadow-lg hover:bg-purple-700 transition-all transform hover:scale-105 uppercase tracking-widest">
                             <i class="fa-solid fa-location-dot"></i>
                             Get Directions
@@ -763,8 +820,8 @@
             <p class="mb-4 text-sm">Thank you for visiting VH Autoglass! We are dedicated to providing
                 quality craftsmanship and exceptional customer service.</p>
             <div class="space-y-2 mb-8">
-                <p class="font-bold text-slate-500"><i
-                        class="fa-solid fa-location-dot mr-2 text-purple-500"></i>Jamieson Ave, Red Deer, AB T4P 0M2,
+                <p class="font-bold text-slate-500"><i class="fa-solid fa-location-dot mr-2 text-purple-500"></i>7492 49
+                    Ave, Red Deer, AB T4P 1M2,
                     Canada</p>
                 <div class="font-bold text-slate-500 flex flex-col md:flex-row justify-center gap-2 md:gap-6">
                     <span><i class="fa-solid fa-phone mr-2 text-purple-500"></i>403-597-1220</span>
